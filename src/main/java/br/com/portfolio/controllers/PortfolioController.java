@@ -57,7 +57,7 @@ public class PortfolioController {
 	}
 	
 	@GetMapping("/downloadCurriculo/{idioma}")
-	public ResponseEntity<ByteArrayResource> downloadCurriculo(@PathVariable("idioma") String idioma) {
+	public ResponseEntity<ByteArrayResource> downloadCurriculo(@PathVariable("idioma") String idioma) throws IOException{
 	    String nomeArquivo = obterNomeArquivo(idioma);
 	    String caminhoCurriculo = "curriculo/" + nomeArquivo;
 
@@ -71,6 +71,8 @@ public class PortfolioController {
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.APPLICATION_PDF);
 	        headers.setContentDispositionFormData("attachment", nomeArquivo);
+	        
+	        PortfolioDto downloadCurriculo = portfolioService.baixarCurriculo();
 
 	        return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(arquivoBytes));
 	    } catch (IOException e) {
@@ -78,7 +80,7 @@ public class PortfolioController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	    }
 	}
-
+	
 	private String obterNomeArquivo(String idioma) {
 	    switch (idioma) {
 	        case "pt-br":
@@ -89,6 +91,5 @@ public class PortfolioController {
 	            return "ludger_english.pdf";
 	    }
 	}
-
 
 }

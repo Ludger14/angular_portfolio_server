@@ -2,6 +2,7 @@ package br.com.portfolio.services;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -50,10 +51,23 @@ public class PortfolioService {
 		
 		portfolioRepository.save(portfolioModel);
 		
-		this.enviarEmailService.enviar(meuEmail, EmailMessage.createTitle(portfolioModel), EmailMessage.messageToNewUser(portfolioModel));
+		this.enviarEmailService.enviar(meuEmail, EmailMessage.createTitle(), EmailMessage.messageToNewUser(portfolioModel));
 		
 		portfolio.setId(portfolioModel.getId());
 		portfolio.setNome(portfolioModel.getNome());
+		
+		portfolio.setSuccess(Boolean.TRUE);
+		
+		return portfolio;
+	}
+	
+	public PortfolioDto baixarCurriculo() throws IOException {
+		
+		String meuEmail = "ludgerjeanlouis@gmail.com";
+		
+		PortfolioDto portfolio = new PortfolioDto();
+		
+		this.enviarEmailService.enviar(meuEmail, EmailMessage.createTitle(), EmailMessage.messageToUser());
 		
 		portfolio.setSuccess(Boolean.TRUE);
 		

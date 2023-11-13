@@ -2,7 +2,7 @@ package br.com.portfolio.model;
 
 public class EmailMessage {
 
-	public static String createTitle(PortfolioModel pessoa) {
+	public static String createTitle() {
 		return "Nova mensagem do seu portfolio!";
 	}
 	
@@ -18,14 +18,10 @@ public class EmailMessage {
 		+ "========================================== \n";
 	}
 
-//	public static String messageToUser(PortfolioModel pessoa) {
-//		return "Olá, " + pessoa.getNome() + "! \n"
-//		+ "Validar o novo email \n"
-//		+ "========================================== \n"
-//		+ "Insira o codigo de acesso. \n\n"
-//		+ "Codigo: " + pessoa.getCodigo() + "\n"
-//		+ "========================================== \n";
-//	}
+	public static String messageToUser() {
+		return "Olá Ludger, \n"
+		+ "Alguém baixou o seu currículo pelo seu site. \n";
+	}
 	
 	public static String changeEmail(PortfolioModel pessoa) {
 		return pessoa.getNome() + " seu email foi alterado!";
