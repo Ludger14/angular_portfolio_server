@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +41,12 @@ import br.com.portfolio.model.PortfolioModel;
 import br.com.portfolio.services.PortfolioService;
 import br.com.portfolio.view.PortfolioDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/portfolio")
-//@CrossOrigin(origins = { "http://localhost:4200", "http://localhost" }, maxAge = 3600)
-@CrossOrigin(origins = {"https://ludger-portfolio.netlify.app/"}, maxAge = 3600)
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost" }, maxAge = 3600)
+//@CrossOrigin(origins = {"https://ludger-portfolio.netlify.app/"}, maxAge = 3600)
 public class PortfolioController {
 
 	@Autowired
@@ -57,9 +60,12 @@ public class PortfolioController {
 	}
 	
 	@GetMapping("/downloadCurriculo/{idioma}")
-	public ResponseEntity<ByteArrayResource> downloadCurriculo(@PathVariable("idioma") String idioma) throws IOException{
+	public ResponseEntity<ByteArrayResource> downloadCurriculo(
+	    @PathVariable("idioma") String idioma,
+	    HttpServletResponse response
+	) throws IOException {
 	    String nomeArquivo = obterNomeArquivo(idioma);
-	    String caminhoCurriculo = "curriculo/" + nomeArquivo;
+	    String caminhoCurriculo = "curriculo/" + idioma + "/" + nomeArquivo;
 
 	    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(caminhoCurriculo)) {
 	        if (inputStream == null) {
@@ -71,7 +77,12 @@ public class PortfolioController {
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.APPLICATION_PDF);
 	        headers.setContentDispositionFormData("attachment", nomeArquivo);
-	        
+
+	        // Configurando Cache-Control para forçar a revalidação
+	        headers.setCacheControl("no-cache, no-store, must-revalidate");
+	        headers.setPragma("no-cache");
+	        headers.setExpires(0);
+
 	        PortfolioDto downloadCurriculo = portfolioService.baixarCurriculo();
 
 	        return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(arquivoBytes));
@@ -80,7 +91,9 @@ public class PortfolioController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	    }
 	}
-	
+
+
+
 	private String obterNomeArquivo(String idioma) {
 	    switch (idioma) {
 	        case "pt-br":
