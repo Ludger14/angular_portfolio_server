@@ -43,6 +43,12 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.11.0</version> <!-- Use a versão mais recente, se disponível -->
+		</dependency>
+		
+		<dependency>
 		    <groupId>jakarta.servlet</groupId>
 		    <artifactId>jakarta.servlet-api</artifactId>
 		    <version>5.0.0</version> <!-- Use a versão mais recente disponível -->
