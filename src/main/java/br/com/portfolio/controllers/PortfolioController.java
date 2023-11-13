@@ -45,8 +45,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/portfolio")
-//@CrossOrigin(origins = { "http://localhost:4200", "http://localhost" }, maxAge = 3600)
-@CrossOrigin(origins = {"https://ludger-portfolio.netlify.app/"}, maxAge = 3600)
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost" }, maxAge = 3600)
+//@CrossOrigin(origins = {"https://ludger-portfolio.netlify.app/"}, maxAge = 3600)
 public class PortfolioController {
 
 	@Autowired
@@ -83,7 +83,7 @@ public class PortfolioController {
 	        headers.setPragma("no-cache");
 	        headers.setExpires(0);
 
-	        PortfolioDto downloadCurriculo = portfolioService.baixarCurriculo();
+	        PortfolioDto downloadCurriculo = portfolioService.baixarCurriculo(idioma);
 
 	        return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(arquivoBytes));
 	    } catch (IOException e) {

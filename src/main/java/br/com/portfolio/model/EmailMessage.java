@@ -18,9 +18,9 @@ public class EmailMessage {
 		+ "========================================== \n";
 	}
 
-	public static String messageToUser() {
+	public static String messageToUser(String idioma) {
 		return "Olá Ludger, \n"
-		+ "Alguém baixou o seu currículo pelo seu site. \n";
+		+ "Alguém baixou o seu currículo em " + idioma + " pelo seu site. \n";
 	}
 	
 	public static String changeEmail(PortfolioModel pessoa) {

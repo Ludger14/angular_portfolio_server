@@ -61,16 +61,29 @@ public class PortfolioService {
 		return portfolio;
 	}
 	
-	public PortfolioDto baixarCurriculo() throws IOException {
+	public PortfolioDto baixarCurriculo(String idioma) throws IOException {
 		
 		String meuEmail = "ludgerjeanlouis@gmail.com";
 		
+		String idiomaCv = obterIdioma(idioma);
+		
 		PortfolioDto portfolio = new PortfolioDto();
 		
-		this.enviarEmailService.enviar(meuEmail, EmailMessage.createTitle(), EmailMessage.messageToUser());
+		this.enviarEmailService.enviar(meuEmail, EmailMessage.createTitle(), EmailMessage.messageToUser(idiomaCv));
 		
 		portfolio.setSuccess(Boolean.TRUE);
 		
 		return portfolio;
+	}
+	
+	public String obterIdioma(String idioma) {
+	    switch (idioma) {
+	        case "pt-br":
+	            return "Português";
+	        case "en":
+	            return "Inglês";
+	        default:
+	            return "Francês";
+	    }
 	}
 }
