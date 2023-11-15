@@ -101,7 +101,7 @@ public class PortfolioController {
 	        case "en":
 	            return "ludger_english.pdf";
 	        default:
-	            return "ludger_english.pdf";
+	            return "ludger_french.pdf";
 	    }
 	}
 
